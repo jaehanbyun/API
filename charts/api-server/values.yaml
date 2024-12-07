@@ -1,0 +1,8 @@
+image:
+  repository: "awbrg789/api-server"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
