@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -42,7 +43,9 @@ func MakeHandler() *AppHandler {
 
 func (a *AppHandler) healthCheck(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("OK"))
+	if _, err := w.Write([]byte("OK")); err != nil {
+		log.Printf("failed to write response: %v", err)
+	}
 }
 
 func (a *AppHandler) getUsers(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +54,9 @@ func (a *AppHandler) getUsers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(users)
+	if err := json.NewEncoder(w).Encode(users); err != nil {
+		log.Printf("failed to encode users: %v", err)
+	}
 }
 
 func (a *AppHandler) getUserByID(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +71,9 @@ func (a *AppHandler) getUserByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
-	json.NewEncoder(w).Encode(user)
+	if err := json.NewEncoder(w).Encode(user); err != nil {
+		log.Printf("failed to encode user: %v", err)
+	}
 }
 
 func (a *AppHandler) createUser(w http.ResponseWriter, r *http.Request) {
