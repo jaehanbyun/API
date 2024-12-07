@@ -1,0 +1,21 @@
+image:
+  repository: postgres
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+postgresUser: "postgres"
+postgresPassword: "postgres"
+postgresDatabase: "user"
+
+service:
+  type: ClusterIP
+  port: 5432
+
+storage:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+persistentVolume:
+  hostPath: "/mnt/data"
